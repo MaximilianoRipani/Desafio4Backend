@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Time Products</title>
+    <style>
+        ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        li {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Real Time Products</h1>
+    <ul>
+        {{#each products}}
+        <li>
+            <h2>{{this.title}}</h2>
+            <p>Description: {{this.description}}</p>
+            <p>Price: ${{this.price}}</p>
+            <img src="{{this.thumbnail}}" alt="{{this.title}}">
+            <p>Code: {{this.code}}</p>
+            <p>Stock: {{this.stock}}</p>
+        </li>
+        {{/each}}
+    </ul>
+    
+    <form id="productForm">
+        <input type="text" name="title" placeholder="Title">
+        <input type="text" name="description" placeholder="Description">
+        <input type="text" name="price" placeholder="Price">
+        <input type="text" name="thumbnail" placeholder="Thumbnail">
+        <input type="text" name="code" placeholder="Code">
+        <input type="text" name="stock" placeholder="Stock">
+        <button type="submit">Agregar Producto</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on('productList', (products) => {
+            const productList = document.querySelector('ul');
+            productList.innerHTML = '';
+            products.forEach(product => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <h2>${product.title}</h2>
+                    <p>Description: ${product.description}</p>
+                    <p>Price: $${product.price}</p>
+                    <img src="${product.thumbnail}" alt="${product.title}">
+                    <p>Code: ${product.code}</p>
+                    <p>Stock: ${product.stock}</p>
+                `;
+                productList.appendChild(listItem);
+            });
+        });
+
+        const productForm = document.getElementById('productForm');
+        productForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(productForm);
+            const newProduct = {};
+            formData.forEach((value, key) => {
+                newProduct[key] = value;
+            });
+            socket

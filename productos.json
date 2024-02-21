@@ -1,0 +1,21 @@
+[
+  {
+    "id": 1,
+    "title": "Surfskate Kalima N1 Short",
+    "description": "Sort Longboard Kalima",
+    "price": 150,
+    "thumbnail": "https://www.cristobalcolon.com/fullaccess/item16422foto118937.jpg",
+    "code": "Kli142",
+    "stock": 37
+  },
+  {
+    "id": 2,
+    "title": "Longboard Santa Cruz Wave Dot Splice",
+    "description": "Longboard Santa Cruz",
+    "price": 159,
+    "thumbnail": "https://www.cristobalcolon.com/fullaccess/item17501foto79977.jpg",
+    "code": "Terd412",
+    "stock": 12
+  }
+ 
+]
